@@ -1,23 +1,34 @@
 
-void light_duration(int output, int msec) {
-  digitalWrite(output, HIGH);
-  delay(msec);
-  digitalWrite(output, LOW);
+constexpr byte LED_PINS[] = {12, 11, 10, 9, 8};
+constexpr unsigned long LIGHT_DURATION_MS = 500;
+
+// LEDの出力状態を設定し、シリアルにも記録する
+void setLedState(byte pin, byte state) {
+  digitalWrite(pin, state);
+
+  Serial.print("D");
+  Serial.print(pin);
+  Serial.print(": ");
+  Serial.println(state == HIGH ? "HIGH" : "LOW");
+}
+
+// LEDを指定時間だけ点灯させる
+void lightLedFor(byte pin, unsigned long durationMs) {
+  setLedState(pin, HIGH);
+  delay(durationMs);
+  setLedState(pin, LOW);
 }
 
 void setup() {
   Serial.begin(115200);
-  pinMode(12, OUTPUT);
-  pinMode(11, OUTPUT);
-  pinMode(10, OUTPUT);
-  pinMode(9, OUTPUT);
+
+  for (byte pin : LED_PINS) {
+    pinMode(pin, OUTPUT);
+  }
 }
 
-
-
 void loop() {
-  light_duration(12, 500);
-  light_duration(11, 500);
-  light_duration(10, 500);
-  light_duration(9, 500);
+  for (byte pin : LED_PINS) {
+    lightLedFor(pin, LIGHT_DURATION_MS);
+  }
 }
