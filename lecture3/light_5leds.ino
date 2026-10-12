@@ -9,7 +9,11 @@ void setLedState(byte pin, byte state) {
   Serial.print("D");
   Serial.print(pin);
   Serial.print(": ");
-  Serial.println(state == HIGH ? "HIGH" : "LOW");
+  if (state == HIGH) {
+    Serial.println("HIGH");
+  } else {
+    Serial.println("LOW");
+  }
 }
 
 // LEDを指定時間だけ点灯させる
